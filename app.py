@@ -107,7 +107,7 @@ def admin():
                            turni=turni,
                            mezzi=mezzi,
                            data_riferimento=oggi)# ================================
- @app.route("/inserisci-turno", methods=["GET", "POST"])
+@app.route("/inserisci-turno", methods=["GET", "POST"])
 def inserisci_turno():
     if session.get("ruolo") != "admin":
         return redirect(url_for("dashboard"))
