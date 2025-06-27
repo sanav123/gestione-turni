@@ -107,6 +107,34 @@ def admin():
                            turni=turni,
                            mezzi=mezzi,
                            data_riferimento=oggi)# ================================
+ @app.route("/inserisci-turno", methods=["GET", "POST"])
+def inserisci_turno():
+    if session.get("ruolo") != "admin":
+        return redirect(url_for("dashboard"))
+
+    utenti = carica_utenti()["username"].tolist()
+    data_default = datetime.today().strftime("%Y-%m-%d")
+
+    if request.method == "POST":
+        data = request.form["data"]
+        username = request.form["username"]
+        squadra = request.form["squadra"]
+
+        df = pd.read_csv(TURNI_FILE, sep=";")
+        nuovo_turno = {
+            "data": pd.to_datetime(data, dayfirst=False, errors="coerce"),
+            "username": username,
+            "squadra": squadra,
+            "turno": "Mattina"  # oppure un campo libero nel form
+        }
+        df = pd.concat([df, pd.DataFrame([nuovo_turno])], ignore_index=True)
+        df["data"] = pd.to_datetime(df["data"], dayfirst=True, errors="coerce")
+        df["data"] = df["data"].dt.strftime("%d/%m/%Y")
+        df.to_csv(TURNI_FILE, sep=";", index=False)
+
+        return redirect(url_for("admin"))
+
+    return render_template("inserisci_turno.html", utenti=utenti, data_default=data_default)
 # Gestione mezzi
 # ================================
 @app.route("/admin/mezzi", methods=["GET", "POST"])
