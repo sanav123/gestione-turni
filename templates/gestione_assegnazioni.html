@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Gestione Assegnazioni</title>
+</head>
+<body>
+  <h2>🔁 Gestione Assegnazioni</h2>
+
+  <table border="1">
+    <tr><th>Data</th><th>Utente</th><th>Squadra</th><th>Elimina</th></tr>
+    {% for a in assegnazioni.to_dict('records') %}
+    <tr>
+      <td>{{ a.data }}</td>
+      <td>{{ a.username }}</td>
+      <td>{{ a.squadra }}</td>
+      <td>
+        <form method="post">
+          <input type="hidden" name="action" value="cancella">
+          <input type="hidden" name="indice" value="{{ a.index }}">
+          <button type="submit">🗑️</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+
+  <h3>➕ Nuova assegnazione</h3>
+  <form method="post">
+    <input type="hidden" name="action" value="aggiungi">
+    Data (gg/mm/aaaa): <input type="text" name="data" required><br>
+    Utente: <input type="text" name="username" required><br>
+    Squadra: <input type="text" name="squadra" required><br>
+    <button type="submit">Salva</button>
+  </form>
+
+  <p><a href="/admin">⬅ Torna al pannello admin</a></p>
+</body>
+</html>

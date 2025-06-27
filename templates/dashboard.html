@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard - {{ username }}</title>
+</head>
+<body>
+  <h2>Benvenuto, {{ username }}!</h2>
+
+  <form method="post">
+    <label>Seleziona una data:</label>
+    <input type="date" name="data" value="{{ data }}">
+    <input type="submit" value="Vedi giornata">
+  </form>
+
+  <h3>Turni del giorno: {{ data }}</h3>
+  {% if turni %}
+    <ul>
+    {% for t in turni %}
+      <li>{{ t.giorno }} - {{ t.orario }} - Squadra {{ t.squadra }}</li>
+    {% endfor %}
+    </ul>
+  {% else %}
+    <p>Nessun turno assegnato per oggi.</p>
+  {% endif %}
+
+  <h3>Mezzi assegnati:</h3>
+  {% if mezzi %}
+    <ul>
+    {% for m in mezzi %}
+      <li>{{ m.mezzo }} ({{ m.targa }}) — {{ m.note }}</li>
+    {% endfor %}
+    </ul>
+  {% else %}
+    <p>Nessun mezzo assegnato alla tua squadra oggi.</p>
+  {% endif %}
+
+  <p><a href="/logout">Logout</a>
+  {% if session['ruolo'] == 'admin' %}
+    | <a href="/admin">Admin settimanale</a>
+  {% endif %}
+  </p>
+</body>
+</html>

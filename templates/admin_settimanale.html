@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin – Settimana per Cantiere</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 2em;
+        }
+        h2, h3 {
+            margin-top: 1em;
+            margin-bottom: 0.5em;
+        }
+        .cantiere {
+            margin-bottom: 2em;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 1em;
+        }
+        .contenuto {
+            display: flex;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+        .sezione {
+            width: 300px;
+        }
+        .riga {
+            padding: 2px 0;
+        }
+        .azioni {
+            margin-top: 2em;
+        }
+        button.stampa {
+            padding: 6px 12px;
+            font-size: 14px;
+        }
+        @media print {
+            .azioni {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Panoramica Settimanale – {{ data_riferimento.strftime("%d/%m/%Y") }}</h2>
+
+    <form method="POST">
+        <label for="data">Data di riferimento:</label>
+        <input type="date" name="data" id="data" value="{{ data_riferimento }}">
+        <button type="submit">Aggiorna</button>
+    </form>
+
+    <div class="azioni">
+        <button onclick="window.print()" class="stampa">🖨️ Stampa settimana</button>
+        <p><a href="{{ url_for('dashboard') }}">&larr; Torna alla Dashboard</a></p>
+    </div>
+
+    {% set cantieri = turni | map(attribute="squadra") | list %}
+    {% for c in cantieri | unique %}
+        <div class="cantiere">
+            <h3>Cantiere {{ c }}</h3>
+            <div class="contenuto">
+                <div class="sezione">
+                    <strong>Turni</strong>
+                    {% for t in turni if t.squadra == c %}
+                        <div class="riga">{{ t.data }} – {{ t.username }} – Turno: {{ t.turno }}</div>
+                    {% endfor %}
+                </div>
+                <div class="sezione">
+                    <strong>Mezzi</strong>
+                    {% for m in mezzi if m.squadra == c %}
+                        <div class="riga">{{ m.data }} – {{ m.mezzo }} – Targa: {{ m.targa }} {% if m.note %}– {{ m.note }}{% endif %}</div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+
+</body>
+</html>

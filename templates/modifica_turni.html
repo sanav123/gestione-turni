@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Gestione Turni</title>
+</head>
+<body>
+  <h2>🛠️ Gestione Turni</h2>
+
+  <h3>🗒️ Turni attuali</h3>
+  <table border="1">
+    <tr>
+      <th>Data</th><th>Utente</th><th>Turno</th><th>Squadra</th><th>Elimina</th>
+    </tr>
+    {% for t in turni.to_dict('records') %}
+    <tr>
+      <td>{{ t.data }}</td>
+      <td>{{ t.username }}</td>
+      <td>{{ t.turno }}</td>
+      <td>{{ t.squadra }}</td>
+      <td>
+        <form method="post" style="display:inline">
+          <input type="hidden" name="action" value="cancella">
+          <input type="hidden" name="indice" value="{{ t.index }}">
+          <button type="submit">🗑️</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+
+  <h3>➕ Aggiungi nuovo turno</h3>
+  <form method="post">
+    <input type="hidden" name="action" value="aggiungi">
+    Data (gg/mm/aaaa): <input type="text" name="data" required><br>
+    Utente: <input type="text" name="username" required><br>
+    Turno (es: 8:00-13:30): <input type="text" name="turno" required><br>
+    Squadra: <input type="text" name="squadra" required><br>
+    <button type="submit">Salva turno</button>
+  </form>
+
+  <p><a href="/admin">⬅ Torna al pannello admin</a></p>
+</body>
+</html>

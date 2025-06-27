@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Gestione Mezzi</title>
+</head>
+<body>
+  <h2>🚚 Gestione Mezzi Assegnati</h2>
+
+  <table border="1">
+    <tr><th>Data</th><th>Squadra</th><th>Mezzo</th><th>Targa</th><th>Note</th><th>Elimina</th></tr>
+    {% for m in mezzi.to_dict('records') %}
+    <tr>
+      <td>{{ m.data }}</td>
+      <td>{{ m.squadra }}</td>
+      <td>{{ m.mezzo }}</td>
+      <td>{{ m.targa }}</td>
+      <td>{{ m.note }}</td>
+      <td>
+        <form method="post">
+          <input type="hidden" name="action" value="cancella">
+          <input type="hidden" name="indice" value="{{ m.index }}">
+          <button type="submit">🗑️</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+
+  <h3>➕ Aggiungi mezzo</h3>
+  <form method="post">
+    <input type="hidden" name="action" value="aggiungi">
+    Data (gg/mm/aaaa): <input type="text" name="data" required><br>
+    Squadra: <input type="text" name="squadra" required><br>
+    Mezzo: <input type="text" name="mezzo" required><br>
+    Targa: <input type="text" name="targa"><br>
+    Note: <input type="text" name="note"><br>
+    <button type="submit">Salva mezzo</button>
+  </form>
+
+  <p><a href="/admin">⬅ Torna al pannello admin</a></p>
+</body>
+</html>
