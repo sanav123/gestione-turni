@@ -51,7 +51,11 @@
         <input type="date" name="data" id="data" value="{{ data_riferimento }}">
         <button type="submit">Aggiorna</button>
     </form>
-
+<div style="margin-bottom: 20px;">
+  <a href="{{ url_for('inserisci_turno') }}" style="padding: 8px 14px; background-color: #4CAF50; color: white; text-decoration: none; border-radius: 4px;">
+      ➕ Inserisci nuovo turno
+  </a>
+</div>
     <div class="azioni">
         <button onclick="window.print()" class="stampa">🖨️ Stampa settimana</button>
         <p><a href="{{ url_for('dashboard') }}">&larr; Torna alla Dashboard</a></p>
