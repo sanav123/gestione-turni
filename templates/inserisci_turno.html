@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Inserisci Nuovo Turno</title>
+</head>
+<body>
+    <h2>➕ Inserisci un nuovo turno</h2>
+
+    <form method="POST">
+        <label for="data">Data:</label><br>
+        <input type="date" name="data" id="data" value="{{ data_default }}" required><br><br>
+
+        <label for="username">Utente:</label><br>
+        <select name="username" id="username" required>
+            {% for nome in utenti %}
+                <option value="{{ nome }}">{{ nome }}</option>
+            {% endfor %}
+        </select><br><br>
+
+        <label for="squadra">Squadra:</label><br>
+        <input type="text" name="squadra" id="squadra" required><br><br>
+
+        <button type="submit">💾 Salva Turno</button>
+    </form>
+
+    <br>
+    <a href="{{ url_for('admin') }}">⬅️ Torna alla vista settimanale</a>
+</body>
+</html>
